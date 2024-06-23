@@ -1,0 +1,9 @@
+logs/
+.vscode
+*/__pycache__
+__pycache__
+*.pdf
+weights
+weights_2
+weights_3
+data/
