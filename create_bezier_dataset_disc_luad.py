@@ -225,8 +225,8 @@ transform = transforms.Compose([
 ])
 
 # %%
-N_train = 3_600
-cnt = 0
+N_train = 10_800
+cnt = 3_600
 i = 1
 while cnt < N_train:
     background_class, foreground_class = np.random.choice(['tum', 'nec', 'lym', 'tas'], size=2, replace=False)

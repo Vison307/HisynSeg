@@ -1,11 +1,11 @@
-GPU=6,
+GPU=5,
 NUM_SAMPLES_1=3600
 NUM_SAMPLES_2=3600
 
-for run in 3 5 8 9
+for r in 3 4 5
 do
-
-LOG_DIR=logs/luad_no_disc3k6_3k6_run${run}
+run=4
+LOG_DIR=logs/luad_no_disc3k6_3k6_run${run}_$r
 
 python mosaic_train_v2.py --model DeepLabV3Plus --encoder efficientnet-b6 --lr 0.0001 --gpus $GPU --epochs 25 --batch-size 32 --semi_image_dir data/LUAD-HistoSeg/train --train_image_dirs data/LUAD-HistoSeg/mosaic_2_112_run${run}/img data/LUAD-HistoSeg/bezier224_5_0.2_0.05_1d1_run${run}/img --train_mask_dirs data/LUAD-HistoSeg/mosaic_2_112_run${run}/mask data/LUAD-HistoSeg/bezier224_5_0.2_0.05_1d1_run${run}/mask --num_samples $NUM_SAMPLES_1 $NUM_SAMPLES_2 --patch-size 224 --val_data data/LUAD-HistoSeg/val --test_data data/LUAD-HistoSeg/test --num-classes 4 --dataset luad --log_dir $LOG_DIR
 

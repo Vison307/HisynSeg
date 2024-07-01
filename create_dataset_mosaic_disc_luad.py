@@ -29,7 +29,7 @@ import argparse
 
 # %%
 parser = argparse.ArgumentParser(description='Create dataset for mosaic training')
-parser.add_argument('--idx', type=int, default=0, help='index of the dataset, range [0, 1]', choices=range(2))
+parser.add_argument('--idx', type=int, default=0, help='index of the dataset, range [0, 1]', choices=range(6))
 parser.add_argument('--run', type=int)
 args = parser.parse_args()
 run = args.run
@@ -206,8 +206,8 @@ transform = transforms.Compose([
                         std=[0.229, 0.224, 0.225]),
 ])
 
-image_save_dir = f"./data/LUAD-HistoSeg/mosaic_2_112_run{run}/disc_img_r18_e5"
-mask_save_dir = f"./data/LUAD-HistoSeg/mosaic_2_112_run{run}/disc_mask_r18_e5"
+image_save_dir = f"/home/fzj/tmpfs/mosaic_2_112_run{run}/disc_img_r18_e5"
+mask_save_dir = f"/home/fzj/tmpfs/mosaic_2_112_run{run}/disc_mask_r18_e5"
 
 if not os.path.exists(image_save_dir):
     os.makedirs(image_save_dir)

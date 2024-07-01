@@ -224,7 +224,7 @@ def main(discriminator, dataloader, image_save_dir, mask_save_dir, cnt, N):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Create dataset for mosaic training')
-    parser.add_argument('--idx', type=int, default=0, help='index of the dataset, range [0, 1]', choices=range(4))
+    parser.add_argument('--idx', type=int, default=0, help='index of the dataset, range [0, 1]', choices=range(5))
     parser.add_argument('--run', type=int)
     args = parser.parse_args()
     return args
@@ -275,6 +275,9 @@ if __name__ == '__main__':
         N = cnt + 100
     elif args.idx == 3:
         cnt = 3450
+        N = 3575
+    elif args.idx == 4:
+        cnt = 3575
         N = 3600
 
     main(discriminator, dataloader, image_save_dir, mask_save_dir, cnt, N)
