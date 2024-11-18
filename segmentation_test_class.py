@@ -56,10 +56,16 @@ class TestDataset(BaseDataset):
 
     def __getitem__(self, i):
         name = self.test_image[i].name
-        label = get_label(self.args.dataset, name)
+        if self.args.dataset == 'wsss4luad':
+            label = get_label(self.args.dataset, name)
         image = self.test_image[i]
         image = np.array(Image.open(image))
         mask = np.array(Image.open(self.test_data / 'mask' / name))
+        if self.args.dataset != 'wsss4luad':
+            label = [0] * self.args.num_classes
+            for i in range(self.args.num_classes):
+                if i in mask:
+                    label[i] = 1
         original_h, original_w = image.shape[:2]
 
         sample = self.transforms(image=image, mask=mask)
@@ -69,7 +75,11 @@ class TestDataset(BaseDataset):
 
 
 def parse_args():
-    # CUDA_VISIBLE_DEVICES=7, python segmentation_test_class.py -ckpt logs/wsss4luad3k6_3k6 --gpus=0, --patch-size=224 --test-data data/WSSS4LUAD/3.testing/patches_224_112 --dataset wsss4luad
+    # CUDA_VISIBLE_DEVICES=2, python segmentation_test_class.py -ckpt logs/wsss4luad3k6_3k6_run5_7 --gpus=0, --patch-size=224 --test-data data/WSSS4LUAD/3.testing/patches_224_112 --dataset wsss4luad
+
+    # CUDA_VISIBLE_DEVICES=2, python segmentation_test_class.py -ckpt logs/luad3k6_3k6 --gpus=0, --patch-size=224 --test-data data/LUAD-HistoSeg/test --dataset luad
+
+    # CUDA_VISIBLE_DEVICES=2, python segmentation_test_class.py -ckpt logs/bcss7k2_7k2 --gpus=0, --patch-size=224 --test-data data/BCSS-WSSS/test --dataset bcss
 
     parser = argparse.ArgumentParser()
 
@@ -129,6 +139,7 @@ def main(args):
             torchmetrics.Recall(num_classes=3, average='macro'),
             torchmetrics.AUROC(num_classes=3, average='macro')
         ])
+        args.num_classes = 3
     else:
         test_metrics = torchmetrics.MetricCollection([
             torchmetrics.Accuracy(num_classes=4, average='micro'),
@@ -137,6 +148,7 @@ def main(args):
             torchmetrics.Recall(num_classes=4, average='macro'),
             torchmetrics.AUROC(num_classes=4, average='macro')
         ])
+        args.num_classes = 4
     test_metrics = test_metrics.cuda()
     model.eval()
     with torch.no_grad():

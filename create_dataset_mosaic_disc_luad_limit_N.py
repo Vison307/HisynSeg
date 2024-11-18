@@ -38,8 +38,8 @@ N_sample = args.N_sample
 
 # np.random.seed(42)
 # random.seed(42)
-# train_dir = Path(f"./data/LUAD-HistoSeg/limit_N/one_label_N{N_sample}_run{run}")
-train_dir = Path(f"/home/fzj/tmpfs/one_label_N{N_sample}_run{run}")
+train_dir = Path(f"./data/LUAD-HistoSeg/limit_N/one_label_N{N_sample}_run{run}")
+# train_dir = Path(f"/home/fzj/tmpfs/one_label_N{N_sample}_run{run}")
 
 # %%
 def get_patch_label(filename):

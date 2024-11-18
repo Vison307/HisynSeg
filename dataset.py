@@ -62,6 +62,7 @@ class LabeledDataset(BaseDataset):
         for i in range(self.num_classes):
             if i in category:
                 label[i] = 1
+        # print(name, sample['image'].shape)
 
         return {'image': sample['image'], 'mask': sample['mask'], 'label': torch.Tensor(label), 'name': name, 'h': image.shape[0], 'w': image.shape[1]}
     

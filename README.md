@@ -1,5 +1,6 @@
-# PistoSeg
-Code Repository for AAAI23 Paper "Weakly-Supervised Semantic Segmentation for Histopathology Images Based on Dataset Synthesis and Feature Consistency Constraint"
+# HisynSeg
+Code under construction. Code will be released after acceptance.
+
 
 ## Installation
 Code tested on

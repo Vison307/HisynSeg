@@ -210,7 +210,7 @@ def synthesize_one(n=12, rad=0.2, edgy=0.05, background_class="tum", foreground_
 
 # %%
 save_dir = f"data/LUAD-HistoSeg/limit_N/bezier224_5_0.2_0.05_1d1_N_{N_sample}_run{run}"
-
+print(save_dir)
 if not os.path.exists(os.path.join(save_dir, 'disc_img_r18_e5')):
     os.makedirs(os.path.join(save_dir, 'disc_img_r18_e5'))
 if not os.path.exists(os.path.join(save_dir, 'disc_mask_r18_e5')):
