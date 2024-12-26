@@ -1,7 +1,5 @@
 import argparse
 import logging
-from pathlib import Path
-import random
 
 import ttach as tta
 from loss import mIoUMask
@@ -10,8 +8,6 @@ from models.mosaic_module_v2 import MosaicModule
 import torch
 from torch.utils.data.dataloader import DataLoader
 import torch.nn.functional as F
-
-import pytorch_lightning as pl
 
 from dataset import *
 import os
@@ -28,7 +24,6 @@ torch.set_num_threads(int(cpu_num))
 
 
 def parse_args():
-    # CUDA_VISIBLE_DEVICES=0, python segmentation_test.py -ckpt test_suppl/mosaic_onelabel:UnetPlusPlus:efficientnet-b0:224:16:0.001 --gpus=0, --patch-size=224 --test-data data115/WSSS4LUAD/test/patches_224_112
 
     parser = argparse.ArgumentParser()
 
@@ -50,34 +45,8 @@ def parse_args():
     return args
 
 
-def seed_worker(worker_id):
-    worker_seed = torch.initial_seed() % 2**32
-    np.random.seed(worker_seed)
-    random.seed(worker_seed)
-
-def get_mask_pred_and_entropy(patch_logit_pred, tissue, patch_label):
-    # there is only one tissue type in the patch
-    if sum(patch_label) == 1:
-        mask_pred = np.full((patch_logit_pred.shape[-2], patch_logit_pred.shape[-1]), patch_label.index(1))
-        entropy = np.zeros_like(mask_pred)
-    else:
-        # there are multiple tissue types in the patch
-        for i in range(len(patch_label)):
-            if patch_label[i] == 0: # do not have this tissue
-                patch_logit_pred[i,:,:] = -1e10 # [C, H, W] # Warning: inplace operation!
-        
-        patch_pos_pred = torch.softmax(patch_logit_pred, dim=0)
-        entropy = -torch.sum(patch_pos_pred * torch.log(patch_pos_pred + 1e-10), dim=0).cpu().numpy() # [H, W]
-        mask_pred = torch.argmax(patch_pos_pred, dim=0)
-        mask_pred = mask_pred.cpu().numpy()
-    
-    mask_pred[tissue == 0] = 3
-
-    return mask_pred, entropy
-
 def interpolate_tensor(tensor, target_shape):
     return F.interpolate(tensor.unsqueeze(0), target_shape, mode='bilinear')[0]
-
 
 class Adaptor(torch.nn.Module):
     def __init__(self, model):

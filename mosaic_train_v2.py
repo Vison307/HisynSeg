@@ -1,14 +1,9 @@
-"""
-Stage 1 - Train on dataset with Mosaic
-"""
 import os
 import argparse
 import logging
 from pathlib import Path
-import random
 import shutil
 import inspect
-import numpy as np
 import albumentations as albu
 from albumentations.pytorch.transforms import ToTensorV2
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
@@ -25,8 +20,6 @@ from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
 from pytorch_lightning import loggers as pl_loggers
 
 from dataset import LabeledDataset, UnlabeledDataset
-from albumentations import ImageOnlyTransform
-import stain_transforms
 
 import time
 execution_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
@@ -225,22 +218,6 @@ def main(args, experiment_name):
     
     # ----> Testing with the best model in mIoU
     logging.critical(f'best path: {callbacks[0].best_model_path}')
-    # args.tta = True # set to True to test with TTA
-    # model = MosaicModule.load_from_checkpoint(callbacks[0].best_model_path, args=args)
-
-    # # ----> Testing
-    # test_image_dir = os.path.join(args.test_data, 'img')
-    # test_mask_dir = os.path.join(args.test_data, 'mask')
-    # test_transform = albu.Compose([
-    #         albu.PadIfNeeded(args.patch_size, args.patch_size, border_mode=2, position=albu.PadIfNeeded.PositionType.TOP_LEFT),
-    #         albu.Normalize(mean=IMAGENET_DEFAULT_MEAN, std=IMAGENET_DEFAULT_STD),  # Normalization
-    #         ToTensorV2(transpose_mask=True),  # [H, W, C] -> [C, H, W]
-    #     ])
-    # test_dataset = LabeledDataset(test_image_dir, test_mask_dir, transforms=test_transform, num_classes=args.num_classes)
-    # test_dataloader = DataLoader(test_dataset, batch_size=64, num_workers=8)
-
-    # test_result = trainer.validate(model, test_dataloader)
-    # logging.critical(f'Test Result: {test_result}')
 
 
 def get_experiment_name(args):

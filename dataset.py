@@ -3,12 +3,10 @@ from pathlib import Path
 import numpy as np
 
 from PIL import Image
+import torch
 from torch.utils.data import Dataset as BaseDataset
 from tqdm import tqdm as tqdm
 import cv2
-
-import torch
-import random
 
 import albumentations as albu
 from albumentations.pytorch.transforms import ToTensorV2

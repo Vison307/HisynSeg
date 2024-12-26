@@ -1,2 +1,10 @@
-*
-!README.md
+.dockerignore
+data
+logs
+outputs
+*/__pycache__
+__pycache__
+.vscode
+*.png
+*.txt
+*.pth

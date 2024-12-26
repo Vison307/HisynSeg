@@ -1,35 +1,16 @@
-from math import ceil
 import os
-from typing import Optional
 from PIL import Image
-from einops import rearrange, repeat, reduce
-# import monai
 import numpy as np
-from pathlib import Path
-from functools import partial
-from pytorch_lightning.utilities.types import STEP_OUTPUT
-
-from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-import ttach as tta
-
-import segmentation_models_pytorch as smp
-from segmentation_models_pytorch.losses import DiceLoss
-import torch.nn as nn
 
 import torch
 import torch.nn.functional as F
-import torchvision.transforms as T
-from torchvision.utils import save_image
-from torch.optim import AdamW, SGD
-from torch.optim.lr_scheduler import ExponentialLR, StepLR, ReduceLROnPlateau
+from torch.optim import AdamW
 
 import pytorch_lightning as pl
 
-import utils
 from models.smp_model import SmpModel
 from loss import mIoUMask
 
-import logging
 
 class MosaicModule(pl.LightningModule):
     def __init__(self, args):
